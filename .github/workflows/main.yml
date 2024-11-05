@@ -1,0 +1,37 @@
+name: Android CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'  # Cambia esto según la versión de Java que uses
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Run tests
+        run: ./gradlew test
+
+      - name: SonarQube Scan
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Asegúrate de agregar tu token en los secretos del repositorio
+        run: |
+          ./gradlew sonarqube \
+            -Dsonar.projectKey=tu_proyecto \
+            -Dsonar.host.url=http://tu_sonarqube_server \
+            -Dsonar.login=$SONAR_TOKEN
