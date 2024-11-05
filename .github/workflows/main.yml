@@ -27,11 +27,12 @@ jobs:
       - name: Run tests
         run: ./gradlew test
 
-      - name: SonarQube Scan
+      - name: SonarCloud Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Asegúrate de agregar tu token en los secretos del repositorio
         run: |
           ./gradlew sonarqube \
-            -Dsonar.projectKey=tu_proyecto \
-            -Dsonar.host.url=http://tu_sonarqube_server \
+            -Dsonar.projectKey=tu_proyecto  # Cambia esto por tu projectKey en SonarCloud
+            -Dsonar.organization=tu_organizacion  # Cambia esto por tu organización en SonarCloud
+            -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=$SONAR_TOKEN
